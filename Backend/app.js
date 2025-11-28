@@ -2,8 +2,10 @@ const dotenv = require("dotenv");
 dotenv.config();
 const express = require("express");
 
+const  protectRoute  = require("./middlewares/authMiddleware");
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));  
 
 const connectDB = require("./config/db");
 connectDB();
@@ -12,6 +14,10 @@ const userRoutes = require("./routes/userRoutes");
 app.use("/api/users", userRoutes);
 
 app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
+app.get("/auth",protectRoute, (req, res) => {
   res.send("Hello World!");
 });
 
